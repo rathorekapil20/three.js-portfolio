@@ -1,8 +1,8 @@
 {
   "name": "portfolio",
-  "homepage": "https://hamishw.com",
+  "homepage": "https://kapilrathore.com",
   "description": "Portfolio site for Kapil Rathore",
-  "repository": "https://github.com/HamishMW/portfolio.git",
+  "repository": "https://github.com/rathorekapil20/portfolio.git",
   "author": "Kapil Rathore",
   "sideEffects": false,
   "type": "module",

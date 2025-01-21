@@ -6,6 +6,6 @@ addons.setConfig({
     ...themes.dark,
     brandImage: './icon.svg',
     brandTitle: 'Kapil Rathore Components',
-    brandUrl: 'https://hamishw.com',
+    brandUrl: 'https://kapilrathore.com',
   },
 });
