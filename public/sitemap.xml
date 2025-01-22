@@ -15,18 +15,18 @@
     <loc>https://kapilrathore.com/uses/</loc>
     <changefreq>monthly</changefreq>
   </url>
-  <url>
+  <!-- <url>
     <loc>https://kapilrathore.com/projects/slice/</loc>
     <changefreq>monthly</changefreq>
-  </url>
-  <url>
+  </url> -->
+  <!-- <url>
     <loc>https://kapilrathore.com/projects/smart-sparrow/</loc>
     <changefreq>monthly</changefreq>
-  </url>
-  <url>
+  </url> -->
+  <!-- <url>
     <loc>https://kapilrathore.com/projects/volkihar-knight/</loc>
     <changefreq>monthly</changefreq>
-  </url>
+  </url> -->
   <url>
     <loc>https://kapilrathore.com/articles/hello-world</loc>
     <changefreq>monthly</changefreq>

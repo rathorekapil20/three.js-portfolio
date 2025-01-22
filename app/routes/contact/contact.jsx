@@ -14,15 +14,14 @@ import { useRef } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
-import { json } from '@remix-run/cloudflare';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import styles from './contact.module.css';
+import emailjs from 'emailjs-com';
+import { useEffect } from 'react';
 
 export const meta = () => {
   return baseMeta({
     title: 'Contact',
-    description:
-      'Send me a message if you’re interested in discussing a project or if you just want to say hi',
+    description: 'Send me a message if you’re interested in discussing a project or if you just want to say hi',
   });
 };
 
@@ -30,25 +29,18 @@ const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
-export async function action({ context, request }) {
-  const ses = new SESClient({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
-
+export const action = async ({ request }) => {
   const formData = await request.formData();
-  const isBot = String(formData.get('name'));
+  const isBot = String(formData.get('name')); // Honeypot field for bot prevention
   const email = String(formData.get('email'));
   const message = String(formData.get('message'));
   const errors = {};
+  
 
-  // Return without sending if a bot trips the honeypot
-  if (isBot) return json({ success: true });
+  // Prevent bot submissions
+  if (isBot) return { success: true };
 
-  // Handle input validation on the server
+  // Validate inputs
   if (!email || !EMAIL_PATTERN.test(email)) {
     errors.email = 'Please enter a valid email address.';
   }
@@ -66,32 +58,12 @@ export async function action({ context, request }) {
   }
 
   if (Object.keys(errors).length > 0) {
-    return json({ errors });
+    return { errors };
   }
 
-  // Send email via Amazon SES
-  await ses.send(
-    new SendEmailCommand({
-      Destination: {
-        ToAddresses: [context.cloudflare.env.EMAIL],
-      },
-      Message: {
-        Body: {
-          Text: {
-            Data: `From: ${email}\n\n${message}`,
-          },
-        },
-        Subject: {
-          Data: `Portfolio message from ${email}`,
-        },
-      },
-      Source: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
-      ReplyToAddresses: [email],
-    })
-  );
-
-  return json({ success: true });
-}
+  // Return success for client-side email sending
+  return { success: true, email, message };
+};
 
 export const Contact = () => {
   const errorRef = useRef();
@@ -101,6 +73,26 @@ export const Contact = () => {
   const actionData = useActionData();
   const { state } = useNavigation();
   const sending = state === 'submitting';
+
+  // Trigger email sending on the client-side after form submission
+  // Update this part to use import.meta.env
+useEffect(() => {
+  if (actionData?.success) {
+    emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID, // Access env variables via import.meta.env
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      { email: actionData.email, message: actionData.message },
+      import.meta.env.VITE_EMAILJS_USER_ID
+    ).then(
+      (response) => {
+        console.log('Email sent successfully:', response);
+      },
+      (error) => {
+        console.error('Email send error:', error);
+      }
+    );
+  }
+}, [actionData]);
 
   return (
     <Section className={styles.contact}>
@@ -176,6 +168,7 @@ export const Contact = () => {
                       <Icon className={styles.formErrorIcon} icon="error" />
                       {actionData?.errors?.email}
                       {actionData?.errors?.message}
+                      {actionData?.errors?.general}
                     </div>
                   </div>
                 </div>
@@ -215,7 +208,7 @@ export const Contact = () => {
               data-status={status}
               style={getDelay(tokens.base.durationXS)}
             >
-              I’ll get back to you within a couple days, sit tight
+              I’ll get back to you within a couple days, sit tight.
             </Text>
             <Button
               secondary
