@@ -52,10 +52,11 @@ export const Home = () => {
   const intro = useRef();
   const projectOne = useRef();
   const projectTwo = useRef();
+  const projectThree = useRef();
   const details = useRef();
 
   useEffect(() => {
-    const sections = [intro, projectOne, projectTwo, details];
+    const sections = [intro, projectOne, details];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -117,7 +118,7 @@ export const Home = () => {
           ],
         }}
       />
-      <ProjectSummary
+      { /* <ProjectSummary
         id="project-2"
         alternate
         sectionRef={projectTwo}
@@ -141,7 +142,27 @@ export const Home = () => {
             },
           ],
         }}
-      />
+      /> */ }
+      { /* <ProjectSummary
+        id="project-3"
+        sectionRef={projectThree}
+        visible={visibleSections.includes(projectThree.current)}
+        index={3}
+        title="Biomedical image collaboration"
+        description="Increasing the amount of collaboration in Slice, an app for biomedical imaging"
+        buttonText="View project"
+        buttonLink="/projects/slice"
+        model={{
+          type: 'laptop',
+          alt: 'Annotating a biomedical image in the Slice app',
+          textures: [
+            {
+              srcSet: `${sliceTexture} 800w, ${sliceTextureLarge} 1920w`,
+              placeholder: sliceTexturePlaceholder,
+            },
+          ],
+        }}
+      /> */ }
       <Profile
         sectionRef={details}
         visible={visibleSections.includes(details.current)}
