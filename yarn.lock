@@ -9508,9 +9508,9 @@ min-indent@^1.0.0, min-indent@^1.0.1:
   resolved "https://registry.yarnpkg.com/min-indent/-/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
   integrity sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==
 
-miniflare@4.20250422.0:
+
   version "4.20250422.0"
-  resolved "https://registry.yarnpkg.com/miniflare/-/miniflare-4.20250422.0.tgz#31fc7ced0b7b8eb3b7ed6cab27b49baeeec627f4"
+
   integrity sha512-3frXK9EZEWQkHMDyppeIbUKwd7OQkNOm2gBtQQzjQ4gtzQmh+yxkyJiiylf+fGbz86djQTLKKQdQ1FC4yM3AMg==
   dependencies:
     "@cspotcode/source-map-support" "0.8.1"
@@ -12665,7 +12665,6 @@ wrangler@^4.13.0:
     "@cloudflare/unenv-preset" "2.3.1"
     blake3-wasm "2.1.5"
     esbuild "0.25.2"
-    miniflare "4.20250422.0"
     path-to-regexp "6.3.0"
     unenv "2.0.0-rc.15"
     workerd "1.20250422.0"
